@@ -1,0 +1,3 @@
+rootProject.name = 'log-analyzer'
+include 'api'
+include 'core'
