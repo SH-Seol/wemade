@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: "wemade log analyzer"
+    version: "0.0.1"
+    description: "wemade(전기아이피) 채용 과제 swagger api 문서입니다"
+    contact: "wemade(전기아이피) 백엔드 개발자 지원자 설승환"
+
+app:
+  swagger:
+    github-url: https://github.com/SH-Seol/wemade
+    description: "채용 과제 github repository"
+
+server:
+  port: 8080
