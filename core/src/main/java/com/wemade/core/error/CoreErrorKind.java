@@ -4,5 +4,6 @@ public enum CoreErrorKind {
     BAD_REQUEST,
     FORBIDDEN,
     NOT_FOUND,
-    CONFLICT
+    CONFLICT,
+    SERVER_ERROR,
 }

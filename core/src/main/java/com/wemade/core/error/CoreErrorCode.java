@@ -1,6 +1,8 @@
 package com.wemade.core.error;
 
 public enum CoreErrorCode {
+    LOG_PARSING001("LP-400"),
+    FILE_IO001("IO-500")
     ;
     private final String code;
 
