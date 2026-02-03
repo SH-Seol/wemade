@@ -27,9 +27,6 @@ public class CsvLogParser implements LogParser {
     private static final Logger log = LoggerFactory.getLogger(CsvLogParser.class);
     private static final DateTimeFormatter DATE_FORMATTER =
             DateTimeFormatter.ofPattern("M/d/yyyy, h:mm:ss.SSS a", Locale.ENGLISH);
-    private static final String DELIMITER = ",";
-
-    private static final int MIN_SPLIT_LENGTH = 7;
     private static final int MAX_ERROR_SAMPLES = 5;
 
     @Override
@@ -72,41 +69,54 @@ public class CsvLogParser implements LogParser {
             }
 
         } catch (IOException e) {
-            throw new CoreException(CoreErrorType.FILE_READ_ERROR, "Error reading input stream: " + e.getMessage());
+            throw new CoreException(CoreErrorType.FILE_READ_ERROR, "input stream 읽기 에러 발생: " + e.getMessage());
         }
 
-        log.info("Parsing completed. Total: {}, Success: {}, Error: {}", totalLines, successCount, errorCount);
+        log.info("Parsing 완료. Total: {}, Success: {}, Error: {}", totalLines, successCount, errorCount);
         return new LogParsingResult(totalLines, successCount, errorCount, errorSamples);
     }
 
     private LogEntry parseLine(String line) {
-        String[] parts = line.split(DELIMITER);
+        String[] parts = parseCsvLine(line);
 
-        // [핵심 수정] 날짜 내 콤마 때문에 length가 예상보다 1개 더 많아짐
-        if (parts.length < MIN_SPLIT_LENGTH) {
-            throw new CoreException(
-                    CoreErrorType.INVALID_LOG_FORMAT,
-                    "Column count too short: " + parts.length
-            );
+        if (parts.length < 6) {
+            throw new CoreException(CoreErrorType.INVALID_LOG_FORMAT, "Column 숫자 에러");
         }
 
-        try {
-            // Timestamp 복원 (parts[0] + "," + parts[1])
-            String timestampStr = (parts[0] + "," + parts[1]).trim().replace("\"", "");
+        String timestampStr = parts[0];
+        String ip = parts[1];
+        String method = parts[2].toUpperCase();
+        String url = parts[3];
+        int status = Integer.parseInt(parts[5]);
 
-            String ip = parts[2].trim();
-            String method = parts[3].trim().toUpperCase();
-            String url = parts[4].trim();
-            String statusStr = parts[6].trim();
+        LocalDateTime timestamp = LocalDateTime.parse(timestampStr, DATE_FORMATTER);
 
-            int status = Integer.parseInt(statusStr);
-            LocalDateTime timestamp = LocalDateTime.parse(timestampStr, DATE_FORMATTER);
+        return new LogEntry(ip, method, url, status, timestamp);
+    }
 
-            return new LogEntry(ip, method, url, status, timestamp);
+    private String[] parseCsvLine(String line) {
+        List<String> tokens = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        boolean inQuotes = false;
 
-        } catch (Exception e) {
-            throw new CoreException(CoreErrorType.INVALID_LOG_FORMAT, "Data conversion failed: " + e.getMessage());
+        for (char c : line.toCharArray()) {
+            // 1. 따옴표를 만난 경우 상태(inQuotes) 변경
+            if (c == '\"') {
+                inQuotes = !inQuotes;
+            }
+            // 2. 쉼표를 만났는데 따옴표 밖인 경우 토큰 완성
+            else if (c == ',' && !inQuotes) {
+                tokens.add(sb.toString().trim());
+                sb.setLength(0); // 버퍼 초기화
+            }
+            // 3. 그 외 문자: 버퍼에 담기
+            else {
+                sb.append(c);
+            }
         }
+        tokens.add(sb.toString().trim());
+
+        return tokens.toArray(new String[0]);
     }
 
     private void handleParsingException(CoreException e, String line, long lineNumber, List<String> errorSamples) {
