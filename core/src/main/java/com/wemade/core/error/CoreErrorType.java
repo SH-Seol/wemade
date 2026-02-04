@@ -2,7 +2,8 @@ package com.wemade.core.error;
 
 public enum CoreErrorType {
     INVALID_LOG_FORMAT(CoreErrorCode.LOG_PARSING001, CoreErrorKind.BAD_REQUEST, "로그 파싱 실패(잘못된 형식)", CoreErrorLevel.WARN),
-    FILE_READ_ERROR(CoreErrorCode.FILE_IO001, CoreErrorKind.SERVER_ERROR, "업로드된 파일을 읽을 수 없습니다.", CoreErrorLevel.ERROR)
+    FILE_READ_ERROR(CoreErrorCode.FILE_IO001, CoreErrorKind.SERVER_ERROR, "업로드된 파일을 읽을 수 없습니다.", CoreErrorLevel.ERROR),
+    ANALYSIS_RESULT_NOT_FOUND(CoreErrorCode.ANALYZER_001, CoreErrorKind.NOT_FOUND, "분석 결과가 존재하지 않습니다.", CoreErrorLevel.WARN)
     ;
     private final CoreErrorCode errorCode;
     private final CoreErrorKind errorKind;
