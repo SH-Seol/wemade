@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -21,7 +22,7 @@ public interface LogAnalysisApiDocs {
     @Operation(
             summary = "로그 파일 업로드 및 분석 요청",
             description = """
-                    로그 파일(.log, .txt)을 업로드하여 분석을 시작합니다.
+                    로그 파일(.csv)을 업로드하여 분석을 시작합니다.
                     <br>내부적으로 스트리밍 파싱을 수행하며, 분석이 완료되면 **분석 ID(analysisId)**를 반환합니다.
                     """
     )
@@ -48,7 +49,7 @@ public interface LogAnalysisApiDocs {
                     required = true,
                     content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE)
             )
-            MultipartFile file
+            @RequestPart("file") MultipartFile file
     ) throws IOException;
 
 
