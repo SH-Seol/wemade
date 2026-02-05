@@ -1,4 +1,4 @@
-package com.wemade.core.domain;
+package com.wemade.core.domain.analysis;
 
 import java.io.InputStream;
 import java.util.List;
@@ -6,9 +6,9 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.stereotype.Service;
 
-import com.wemade.core.domain.AnalysisResult.IpStat;
-import com.wemade.core.domain.AnalysisResult.PathStat;
-import com.wemade.core.domain.AnalysisResult.StatusCodeStat;
+import com.wemade.core.domain.analysis.AnalysisResult.IpStat;
+import com.wemade.core.domain.analysis.AnalysisResult.PathStat;
+import com.wemade.core.domain.analysis.AnalysisResult.StatusCodeStat;
 import com.wemade.core.error.CoreErrorType;
 import com.wemade.core.error.CoreException;
 import com.wemade.core.parser.LogParser;
