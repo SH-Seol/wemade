@@ -33,5 +33,9 @@ public record AnalysisResult(
             String region,
             String city,
             String asn
-    ){}
+    ){
+        public IpStat with(String country, String region, String city, String asn) {
+            return new IpStat(this.ip, this.count, country, region, city, asn);
+        }
+    }
 }
