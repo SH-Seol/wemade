@@ -19,7 +19,7 @@ import com.wemade.core.domain.LogAnalysisService;
 
 @RestController
 @RequestMapping("/api/v1/analysis")
-public class LogAnalysisController {
+public class LogAnalysisController implements LogAnalysisApiDocs{
 
     private final LogAnalysisService logAnalysisService;
 
