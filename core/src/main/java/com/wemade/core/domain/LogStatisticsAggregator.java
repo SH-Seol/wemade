@@ -15,6 +15,8 @@ import com.wemade.core.domain.AnalysisResult.StatusCodeStat;
 
 public class LogStatisticsAggregator {
 
+    private static final int SAFETY_LIMIT = 1000;
+
     private final LocalDateTime startTime = LocalDateTime.now();
     private final LongAdder adder = new LongAdder();
 
@@ -32,7 +34,7 @@ public class LogStatisticsAggregator {
         statusCounts.computeIfAbsent(logEntry.status(), k -> new LongAdder()).increment();
     }
 
-    public AnalysisResult createResult(Long id, long errorCount, int topN){
+    public AnalysisResult createResult(Long id, long errorCount){
         long total = adder.sum();
 
         return new AnalysisResult(
@@ -41,9 +43,9 @@ public class LogStatisticsAggregator {
                 total,
                 errorCount,
                 calculateStatusRatio(total),
-                getTopPaths(topN),
-                getTopStatusCodes(topN),
-                getTopIps(topN)
+                getCollectedPaths(),
+                getCollectedStatusCodes(),
+                getCollectedIps()
         );
     }
 
@@ -71,33 +73,32 @@ public class LogStatisticsAggregator {
         ));
     }
 
-    private List<IpStat> getTopIps(int limit){
-        return ipCounts.entrySet().stream()
+    private List<IpStat> getCollectedIps(){
+        return ipCounts.entrySet()
+                .stream()
                 .sorted((e1, e2) -> Long.compare(e2.getValue().sum(), e1.getValue().sum()))
-                .limit(limit)
+                .limit(SAFETY_LIMIT)
                 .map(e -> new IpStat(
                         e.getKey(),
                         e.getValue().sum(),
-                        null,
-                        null,
-                        null,
-                        null))
+                        null, null, null, null)) // 정보는 비워둠 (조회 시 채움)
                 .toList();
     }
 
-    private List<PathStat> getTopPaths(int limit){
+    private List<PathStat> getCollectedPaths(){
         return pathCounts.entrySet()
                 .stream()
                 .sorted((e1, e2) -> Long.compare(e2.getValue().sum(), e1.getValue().sum()))
-                .limit(limit)
+                .limit(SAFETY_LIMIT)
                 .map(e -> new PathStat("ALL" , e.getKey(), e.getValue().sum()))
                 .toList();
     }
 
-    private List<StatusCodeStat> getTopStatusCodes(int limit){
-        return statusCounts.entrySet().stream()
+    private List<StatusCodeStat> getCollectedStatusCodes(){
+        return statusCounts.entrySet()
+                .stream()
                 .sorted((e1, e2) -> Long.compare(e2.getValue().sum(), e1.getValue().sum()))
-                .limit(limit)
+                .limit(SAFETY_LIMIT)
                 .map(e -> new StatusCodeStat(e.getKey(), e.getValue().sum()))
                 .toList();
     }
