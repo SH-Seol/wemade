@@ -12,7 +12,7 @@ import org.springframework.web.client.RestClient;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import com.wemade.core.domain.AnalysisResult.IpStat;
+import com.wemade.core.domain.analysis.AnalysisResult.IpStat;
 import com.wemade.core.port.IpInfoClient;
 import com.wemade.infrastructure.error.InfraErrorType;
 import com.wemade.infrastructure.error.InfraException;

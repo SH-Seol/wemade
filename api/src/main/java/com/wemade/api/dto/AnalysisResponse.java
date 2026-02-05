@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-import com.wemade.core.domain.AnalysisResult;
-import com.wemade.core.domain.AnalysisResult.IpStat;
+import com.wemade.core.domain.analysis.AnalysisResult;
+import com.wemade.core.domain.analysis.AnalysisResult.IpStat;
 
 public record AnalysisResponse(
         Long id,

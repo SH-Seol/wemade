@@ -1,4 +1,4 @@
-package com.wemade.core.domain;
+package com.wemade.core.domain.analysis;
 
 import java.time.LocalDateTime;
 

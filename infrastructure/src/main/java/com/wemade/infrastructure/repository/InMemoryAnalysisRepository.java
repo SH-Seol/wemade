@@ -6,8 +6,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.stereotype.Repository;
 
-import com.wemade.core.domain.AnalysisResult;
-import com.wemade.core.domain.LogAnalysisRepository;
+import com.wemade.core.domain.analysis.AnalysisResult;
+import com.wemade.core.domain.analysis.LogAnalysisRepository;
 
 @Repository
 public class InMemoryAnalysisRepository implements LogAnalysisRepository {

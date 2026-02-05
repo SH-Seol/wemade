@@ -1,6 +1,6 @@
 package com.wemade.core.parser;
 
-import com.wemade.core.domain.LogEntry;
+import com.wemade.core.domain.analysis.LogEntry;
 import com.wemade.core.error.CoreErrorLevel;
 import com.wemade.core.error.CoreErrorType;
 import com.wemade.core.error.CoreException;

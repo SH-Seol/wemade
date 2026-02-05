@@ -1,4 +1,4 @@
-package com.wemade.core.domain;
+package com.wemade.core.domain.analysis;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -9,9 +9,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.LongAdder;
 import java.util.stream.Collectors;
 
-import com.wemade.core.domain.AnalysisResult.IpStat;
-import com.wemade.core.domain.AnalysisResult.PathStat;
-import com.wemade.core.domain.AnalysisResult.StatusCodeStat;
+import com.wemade.core.domain.analysis.AnalysisResult.IpStat;
+import com.wemade.core.domain.analysis.AnalysisResult.PathStat;
+import com.wemade.core.domain.analysis.AnalysisResult.StatusCodeStat;
 
 public class LogStatisticsAggregator {
 

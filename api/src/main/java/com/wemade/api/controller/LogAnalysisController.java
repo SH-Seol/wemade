@@ -16,8 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.wemade.api.dto.AnalysisIdResponse;
 import com.wemade.api.dto.AnalysisResponse;
-import com.wemade.core.domain.AnalysisResult;
-import com.wemade.core.domain.LogAnalysisService;
+import com.wemade.core.domain.analysis.AnalysisResult;
+import com.wemade.core.domain.analysis.LogAnalysisService;
 
 @RestController
 @RequestMapping("/api/v1/analysis")
