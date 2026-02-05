@@ -4,6 +4,8 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.wemade.core.domain.analysis.AnalysisResult.IpStat;
@@ -17,6 +19,8 @@ import com.wemade.core.port.IpInfoClient;
 
 @Service
 public class LogAnalysisService {
+
+    private static final Logger log = LoggerFactory.getLogger(LogAnalysisService.class);
 
     private final LogParser logParser;
     private final LogAnalysisRepository logAnalysisRepository;
@@ -32,11 +36,19 @@ public class LogAnalysisService {
     }
 
     public Long analyze(InputStream inputStream) {
+        long startTime = System.currentTimeMillis();
+        log.info("로그 분석 시작");
+
         LogStatisticsAggregator aggregator = new LogStatisticsAggregator();
 
         LogParsingResult parsingResult = logParser.parse(inputStream, aggregator::process);
         Long analysisId = sequence.getAndIncrement();
         AnalysisResult result = aggregator.createResult(analysisId, parsingResult.errorCount());
+
+        long duration = System.currentTimeMillis() - startTime;
+
+        log.info("분석 완료 - ID: {}, 소요시간: {}ms, 총 라인: {}, 파싱 에러: {}",
+                analysisId, duration, result.totalRequests(), result.errorLineCount());
 
         return logAnalysisRepository.save(result);
     }
