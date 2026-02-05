@@ -10,5 +10,9 @@ app:
     github-url: https://github.com/SH-Seol/wemade
     description: "채용 과제 github repository"
 
+external:
+  ipinfo:
+    api_token: d9137d975cb34a
+
 server:
   port: 8080
